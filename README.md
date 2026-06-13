@@ -1,6 +1,6 @@
 # python-saol
 
-Python-paketering av den senaste SAOL-utgåvan som är fritt tillgänglig, SAOL 14[^1].
+Python-paketering av den senaste SAOL-utgåvan som är fritt tillgänglig, SAOL 14 från 2015[^1].
 
 Mer information om SAOL som datakälla: https://spraakbanken.gu.se/resurser/historiska-saol
 
@@ -19,9 +19,10 @@ print()
 part_of_speech_by_word = {entry.word: entry.upos for entry in saol14}
 
 for word in "en putslustig talgoxe äter finfördelad goja".split():
-    if word in part_of_speech_by_word:
+    upos = part_of_speech_by_word.get(word, None)
+    if upos:
         print(
-            f'"{word}" finns i ordlistan och är märkt med ordklassen {part_of_speech_by_word[word]}.'
+            f'"{word}" finns i ordlistan och är märkt med ordklassen {upos}.'
         )
     else:
         print(f'"{word}" finns inte i ordlistan.')
@@ -49,14 +50,15 @@ Det finns också ett antal "ord" (2432 stycken) som består av flera ord, till e
 
 ## Framtida arbete
 
-- Tillgänggliggör böjningar av ord. Här bör man kunna använda `text`-fältet för att härleda hur andra former ser ut.
+- Tillgänggliggör böjningar av ord. Här bör man kunna använda `conj`-fältet (motsvarande `conj` i faksimilfilen)
+  för att härleda hur andra former ser ut.
 
 ## Om indataformatet
 
 Här följer lite anteckningar kring indatan i faksimilfilen, som laddas ner från Språkbanken då paketet byggs.
 
 - Ordklasser i `upos`-fältet är taggade enligt [Universal Dependencies](https://universaldependencies.org/).
-- Ordklasser i `ordkl`-fältet är taggade på svenska, och ibland även med böjningssuffix i en ´<i></i>´-tagg.
+- Ordklasser i `ordkl`-fältet är taggade på svenska, och ibland även med böjningssuffix i en `<i></i>`-tagg.
 - `normaliserat_ord` är normalt det ord man vill använda, då det är rensat från betoningsmarkeringar och liknande.
 - `text`-fältet verkar innehålla  samma sak som böjningssuffixen i `ordkl`-fältet.
 

@@ -1,0 +1,63 @@
+# python-saol
+
+Python-paketering av den senaste SAOL-utgåvan som är fritt tillgänglig, SAOL 14[^1].
+
+Mer information om SAOL som datakälla: https://spraakbanken.gu.se/resurser/historiska-saol
+
+## Användning
+
+Ordlistan exponeras som en enkel lista med ord och ordklass. Ett exempel på användning:
+
+```python
+from saol import saol14
+
+print(f"Ordlistan innehåller {len(saol14)} ord.")
+print("Första ordet i listan:")
+print(saol14[0])
+print()
+
+part_of_speech_by_word = {entry.word: entry.upos for entry in saol14}
+
+for word in "en putslustig talgoxe äter finfördelad goja".split():
+    if word in part_of_speech_by_word:
+        print(
+            f'"{word}" finns i ordlistan och är märkt med ordklassen {part_of_speech_by_word[word]}.'
+        )
+    else:
+        print(f'"{word}" finns inte i ordlistan.')
+```
+
+Exemplet ger följande utskrift:
+
+```
+Ordlistan innehåller 126900 ord.
+Första ordet i listan:
+SaolEntry(word='a', upos='NOUN', conj='a:et; pl. a:n el. a, best. pl. a:na')
+
+"en" finns i ordlistan och är märkt med ordklassen X.
+"putslustig" finns i ordlistan och är märkt med ordklassen ADJ.
+"talgoxe" finns i ordlistan och är märkt med ordklassen NOUN.
+"äter" finns inte i ordlistan.
+"finfördelad" finns inte i ordlistan.
+"goja" finns i ordlistan och är märkt med ordklassen NOUN.
+```
+
+Notera att endast ord i grundform förekommer i listan: `finfördela` finns med, men inte `finfördelad`.
+Likaså `äta` men inte `äter`.
+
+Det finns också ett antal "ord" (2432 stycken) som består av flera ord, till exempel `haka på`, `fylla i` samt `ruska av sig`.
+
+## Framtida arbete
+
+- Tillgänggliggör böjningar av ord. Här bör man kunna använda `text`-fältet för att härleda hur andra former ser ut.
+
+## Om indataformatet
+
+Här följer lite anteckningar kring indatan i faksimilfilen, som laddas ner från Språkbanken då paketet byggs.
+
+- Ordklasser i `upos`-fältet är taggade enligt [Universal Dependencies](https://universaldependencies.org/).
+- Ordklasser i `ordkl`-fältet är taggade på svenska, och ibland även med böjningssuffix i en ´<i></i>´-tagg.
+- `normaliserat_ord` är normalt det ord man vill använda, då det är rensat från betoningsmarkeringar och liknande.
+- `text`-fältet verkar innehålla  samma sak som böjningssuffixen i `ordkl`-fältet.
+
+[^1]: Svenska Akademien (2025). SAOL 14 (2015) - faksimil (uppdaterad: 2025-12-11). [Data set]. Språkbanken Text. https://doi.org/10.23695/fqh2-af42

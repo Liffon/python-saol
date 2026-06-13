@@ -1,0 +1,20 @@
+[project]
+name = "saol"
+version = "0.1.0"
+description = "Publicly available SAOL as a simple Python library"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist.hooks.custom]
+path = "download_saol_facsimile.py"
+urls = [
+    "https://spraakbanken.gu.se/resurser/data/karp/saol14-faksimil.jsonl"
+]
+
+[tool.hatch.build.targets.wheel.hooks.custom]
+path = "parse_saol_facsimile.py"

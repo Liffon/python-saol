@@ -6,15 +6,19 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = []
 
+[project.urls]
+Homepage = "https://github.com/Liffon/python-saol"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[[saol.wordlist]]
+url = "https://spraakbanken.gu.se/resurser/data/karp/saol14-faksimil.jsonl"
+license_notice = "Generated from https://doi.org/10.23695/fqh2-af42 which has license CC-BY-4.0"
+
 [tool.hatch.build.targets.sdist.hooks.custom]
 path = "download_saol_facsimile.py"
-urls = [
-    "https://spraakbanken.gu.se/resurser/data/karp/saol14-faksimil.jsonl"
-]
 
 [tool.hatch.build.targets.wheel.hooks.custom]
 path = "parse_saol_facsimile.py"

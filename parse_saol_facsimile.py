@@ -53,7 +53,9 @@ def saol_entry_ast(entry: FacsimileEntry) -> Expr:
 
 
 def write_wordlist_python_file(
-    source_path: os.PathLike, destination_path: os.PathLike
+    source_path: os.PathLike,
+    destination_path: os.PathLike,
+    license_notice: str,
 ) -> None:
     with open(source_path, "r") as i:
         entries = (FacsimileEntry(**json.loads(line)) for line in i.readlines())
@@ -62,8 +64,9 @@ def write_wordlist_python_file(
     # so we split the list into lines manually
     words_ast = ast.parse(
         textwrap.dedent(
-            """
+            f"""
             from saol import SaolEntry
+            _license_notice = "{license_notice}"
             words = [LIST_CONTENTS_PLACEHOLDER]
             """
         )
@@ -89,7 +92,11 @@ class CustomBuildHook(BuildHookInterface):
         for input_file in (Path(file) for file in glob("data/saol*-faksimil.jsonl")):
             name = re.match(r"(saol[^-]+)-faksimil.jsonl", input_file.name).group(1)
             destination_file = wordlists_dir / (f"{name}.py")
-            write_wordlist_python_file(input_file, destination_file)
+
+            with open(f"{input_file}.license") as f:
+                license_notice = f.read().strip()
+
+            write_wordlist_python_file(input_file, destination_file, license_notice)
             build_data["artifacts"].append(str(destination_file))
 
             generated_files.append(name)

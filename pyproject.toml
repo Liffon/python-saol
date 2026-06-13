@@ -4,6 +4,8 @@ version = "0.1.0"
 description = "Publicly available SAOL as a simple Python library"
 readme = "README.md"
 requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
 dependencies = []
 
 [project.urls]

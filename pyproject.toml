@@ -1,6 +1,6 @@
 [project]
 name = "saol"
-version = "0.1.0"
+version = "0.1.1"
 description = "Publicly available SAOL as a simple Python library"
 readme = "README.md"
 requires-python = ">=3.9"

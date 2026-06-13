@@ -2,11 +2,15 @@
 
 Python-paketering av den senaste SAOL-utgåvan som är fritt tillgänglig, SAOL 14 från 2015[^1].
 
+SAOL 14 är licensierad under Creative Commons Attribution 4.0 International (CC-BY-4.0).
+
 Mer information om SAOL som datakälla: https://spraakbanken.gu.se/resurser/historiska-saol
+
+Jag som gjort det här pythonpaketet har ingen koppling till SAOL, Språkbanken eller Göteborgs universitet.
 
 ## Användning
 
-Ordlistan exponeras som en enkel lista med ord och ordklass. Ett exempel på användning:
+Ordlistan exponeras som en enkel lista med ord, ordklass och böjningar. Ett exempel på användning:
 
 ```python
 from saol import saol14

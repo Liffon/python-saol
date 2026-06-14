@@ -2,9 +2,9 @@ import ast
 import json
 import os
 import re
+import sys
 import textwrap
 from ast import Constant, Dict, Expr
-from glob import glob
 from pathlib import Path
 from typing import Any, NamedTuple
 
@@ -85,19 +85,30 @@ class CustomBuildHook(BuildHookInterface):
     PLUGIN_NAME = "saol-parser"
 
     def initialize(self, version: str, build_data: dict[str, Any]):
+        sys.path.insert(0, self.root)
+        from download_saol_facsimile import add_artifact, read_wordlist_spec
+
+        wordlists = read_wordlist_spec()
+
+        if not wordlists:
+            msg = "No wordlists provided"
+            raise ValueError(msg)
+
         wordlists_dir = Path("src/saol/wordlist")
         wordlists_dir.mkdir(exist_ok=True)
 
         generated_files = []
-        for input_file in (Path(file) for file in glob("data/saol*-faksimil.jsonl")):
+        for wordlist in wordlists:
+            input_file = Path("data", wordlist.filename)
+            print(f"Processing {input_file}")
+
             name = re.match(r"(saol[^-]+)-faksimil.jsonl", input_file.name).group(1)
             destination_file = wordlists_dir / (f"{name}.py")
 
-            with open(f"{input_file}.license") as f:
-                license_notice = f.read().strip()
-
-            write_wordlist_python_file(input_file, destination_file, license_notice)
-            build_data["artifacts"].append(str(destination_file))
+            write_wordlist_python_file(
+                input_file, destination_file, wordlist.license_notice
+            )
+            add_artifact(build_data, self.root, destination_file)
 
             generated_files.append(name)
 

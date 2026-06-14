@@ -13,20 +13,21 @@ Jag som gjort det här pythonpaketet har ingen koppling till SAOL, Språkbanken 
 Ordlistan exponeras som en enkel lista med ord, ordklass och böjningar. Ett exempel på användning:
 
 ```python
-from saol import saol14
+from saol import all_upos_by_word, saol14
 
 print(f"Ordlistan innehåller {len(saol14)} ord.")
 print("Första ordet i listan:")
 print(saol14[0])
 print()
 
-part_of_speech_by_word = {entry.word: entry.upos for entry in saol14}
+part_of_speech_by_word = all_upos_by_word(saol14)
 
-for word in "en putslustig talgoxe äter finfördelad goja".split():
+for word in "en putslustig talgoxe äter sin finfördelade goja".split():
     upos = part_of_speech_by_word.get(word, None)
     if upos:
         print(
-            f'"{word}" finns i ordlistan och är märkt med ordklassen {upos}.'
+            f'"{word}" finns i ordlistan och är märkt med ordklass(er)'
+            f' {", ".join(upos)}.'
         )
     else:
         print(f'"{word}" finns inte i ordlistan.')
@@ -39,12 +40,13 @@ Ordlistan innehåller 126900 ord.
 Första ordet i listan:
 SaolEntry(word='a', upos='NOUN', conj='a:et; pl. a:n el. a, best. pl. a:na')
 
-"en" finns i ordlistan och är märkt med ordklassen X.
-"putslustig" finns i ordlistan och är märkt med ordklassen ADJ.
-"talgoxe" finns i ordlistan och är märkt med ordklassen NOUN.
+"en" finns i ordlistan och är märkt med ordklass(er) PRON, X, NOUN.
+"putslustig" finns i ordlistan och är märkt med ordklass(er) ADJ.
+"talgoxe" finns i ordlistan och är märkt med ordklass(er) NOUN.
 "äter" finns inte i ordlistan.
-"finfördelad" finns inte i ordlistan.
-"goja" finns i ordlistan och är märkt med ordklassen NOUN.
+"sin" finns i ordlistan och är märkt med ordklass(er) PRON, X, NOUN.
+"finfördelade" finns inte i ordlistan.
+"goja" finns i ordlistan och är märkt med ordklass(er) NOUN.
 ```
 
 Notera att endast ord i grundform förekommer i listan: `finfördela` finns med, men inte `finfördelad`.

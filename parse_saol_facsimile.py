@@ -65,7 +65,7 @@ def write_wordlist_python_file(
     words_ast = ast.parse(
         textwrap.dedent(
             f"""
-            from saol import SaolEntry
+            from saol.types import SaolEntry
             _license_notice = "{license_notice}"
             words = [LIST_CONTENTS_PLACEHOLDER]
             """
